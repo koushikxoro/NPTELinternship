@@ -65,7 +65,7 @@ def factSequenceAnalysis(path):
                          real_count+=1
                      else:
                          file2.write(tagged_word[0]+",")
-         me=(all_count-real_count)/real_count*100
+         me=(all_count-real_count)/all_count*100
          file2.write("\n ACCURACY percentage="+str(me))
          
          y.append(me)       
