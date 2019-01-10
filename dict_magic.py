@@ -18,7 +18,7 @@ def magic(path):
      for rev in root.find('{http://www.mediawiki.org/xml/export-0.10/}page').findall('{http://www.mediawiki.org/xml/export-0.10/}revision'):
          
          count_rev+=1
-         print(count_rev)
+         #print(count_rev)
          
          
         
@@ -34,6 +34,7 @@ def magic(path):
          for i in templates[1:]:
              str1=str(first)
              str2=str(i)
+             #slicing for removing  square braces
              str3=str1[2:len(str1)-2]+"$#$$@*"+str2[2:len(str2)-2]
              if str3 not in mdic.keys():
                  mdic[str3]=1
@@ -41,7 +42,7 @@ def magic(path):
          
          #print(templates)
      #print(mdic)
-             
+     print(len(mdic.keys()))      
                      
                     
 
