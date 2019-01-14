@@ -13,6 +13,7 @@ import string
 
 from gensim.models import Word2Vec
 model=Word2Vec.load('en.model')
+print("reading complete")
 file2=open("distance_v2.txt","w")
 def hasNumbers(inputString):
     return any(char.isdigit() for char in inputString)
@@ -53,6 +54,7 @@ def distme(path):
          
          m=0
          sum=0
+         #for getting the first PPN
          while m<len(tagged_sent):
 		             
              if hasNumbers(tagged_sent[m][0]) == False and hasPunctuations(tagged_sent[m][0]) == False and len(tagged_sent[m][0]) > 2 and tagged_sent[m][1] in tags:
@@ -62,6 +64,7 @@ def distme(path):
              m+=1    
          #print("FOund!!")
          count=0
+         #for finding distance with adjacent words
          for tagged_word in tagged_sent[m+1:]:
              
              
@@ -79,9 +82,10 @@ def distme(path):
                     
                  first=tagged_word[0]
          y.append(sum/count)  
-         
+#printing the list y which contains average distance for a revision         
 print(y)
 str1=''                     
+#storing it in a file for graph plotting
 for i in range(0,len(y)):
 	str1+=str(y[i])+" "
 file2.write(str1)
