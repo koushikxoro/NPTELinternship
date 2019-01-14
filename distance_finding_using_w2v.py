@@ -15,6 +15,7 @@ from gensim.models import Word2Vec
 model=Word2Vec.load('en.model')
 print("reading complete")
 file2=open("distance_v2.txt","w")
+file3=open("distance_v3.txt","w")
 def hasNumbers(inputString):
     return any(char.isdigit() for char in inputString)
 
@@ -43,7 +44,7 @@ def distme(path):
          
          
          
-        
+         file3.write("revision "+str(c)+"---------------")
          text = rev.find('{http://www.mediawiki.org/xml/export-0.10/}text').text;
          if(not text):
              
@@ -53,7 +54,7 @@ def distme(path):
          tagged_sent =  pos_tag(word_tokenize(text))
          
          m=0
-         sum=0
+         sum1=0
          #for getting the first PPN
          while m<len(tagged_sent):
 		             
@@ -69,32 +70,45 @@ def distme(path):
              
              
              if hasNumbers(tagged_word[0]) == False and hasPunctuations(tagged_word[0]) == False and len(tagged_word[0]) > 2 and (tagged_word[1] in tags):
-                 print("yes")
+                 #print("yes")
                  try:
-                     sum+=model.wv.similarity(first,tagged_word[0])
+                     sum1+=model.wv.similarity(first,tagged_word[0])
 		             
                  except:
                      pass
                  else:
                      count+=1
-         
+                     file3.write(str(model.wv.similarity(first,tagged_word[0])))
                  
                     
                  first=tagged_word[0]
-         y.append(sum/count)  
+         print("sum1=",sum1)
+		 
+         print("count=",count)
+         try:
+             v1=sum1/count
+         except:
+             pass
+         else:
+             print("sum/count=",v1)
+         #y.append(sum1/count)
+             file2.write(str(str(v1)+" "))
 #printing the list y which contains average distance for a revision         
-print(y)
-str1=''                     
+#print(y)
+#str1=''                     
 #storing it in a file for graph plotting
+'''
 for i in range(0,len(y)):
 	str1+=str(y[i])+" "
 file2.write(str1)
+'''
 '''                    
 plt.plot(x,y)
 plt.xlabel("revisions")
 plt.ylabel("magic")
 plt.savefig('see.png',dpi=800)
 '''
-distme("2.xml")
+distme("1.xml")
 
 file2.close()
+file3.close()
