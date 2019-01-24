@@ -16,7 +16,7 @@ import os
 model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
 
 print('Model Loaded')
-FAList = os.listdir('wiki_data/FA')
+FAList = os.listdir('wiki_data/test')
 allDistanceDict = {}
 vocabularyDict = {}
 def getDistance(articleName,model):
@@ -26,7 +26,7 @@ def getDistance(articleName,model):
     root = root[1]
     Text = ''
     
-    #result = []
+    result = []
     for child in root:
         if 'revision' in child.tag:
             for each in child:
@@ -61,6 +61,7 @@ def getDistance(articleName,model):
                                     vocabularyDict[wikilinks[i]].append(wikilinks[i+1])
                     
     countDistance = 0
+ 
     for i in range(len(wikilinks)-3):
         li = vocabularyDict[wikilinks[i]]
         distance_list = []
@@ -71,28 +72,15 @@ def getDistance(articleName,model):
             localDict[j] = allDistanceDict[dummyWord]
         if((allDistanceDict[wikilinks[i]+'#$#'+wikilinks[i+1]] <= min(distance_list)) or (model.wmdistance(wikilinks[i],wikilinks[i+2]) <= min(distance_list)) or (model.wmdistance(wikilinks[i],wikilinks[i+3]) <= min(distance_list)) ):
                        countDistance+=1
+
     
     percentageDistance = countDistance/len(wikilinks)
-    
-    return percentageDistance
+    result.append(percentageDistance)
+    return result
 
-'''
-def findDistance(model,article_name,point):
-    getDistance('wiki_data/FA/'+article_name+'.xml',model)
-    
-    xAxis = [i for i in range(1,len(distance)+1)]
-    sc = [point for i in range(1,len(distance)+1)]
-    
-    plt.xlabel('Revisions', fontsize=12)
-    
-    plt.ylabel('sum of distance', fontsize=12)
-    
-    plt.scatter(xAxis,distance,c = 'r', s=sc, marker='o')
-    plt.show()
-    
-'''
+
     
 for articles in FAList:
-    distance = getDistance('wiki_data/FA/'+articles,model)
-    with open('factDistance.txt','a',errors='ignore') as myFile:
+    distance = getDistance('wiki_data/test/'+articles,model)
+    with open('testFile.txt','a',errors='ignore') as myFile:
         myFile.write(articles[:-4]+' '+str(distance)+'\n')
